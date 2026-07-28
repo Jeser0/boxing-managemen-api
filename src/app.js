@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const boxerRoutes = require("./routes/boxer.routes");
+const weatherRoutes = require("./routes/weather.routes");
 const requestLogger = require("./middlewares/requestLogger");
 
 const app = express();
@@ -17,5 +18,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/boxers", boxerRoutes);
+app.use("/api/weather", weatherRoutes);
 
 module.exports = app;

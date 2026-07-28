@@ -4,6 +4,8 @@ const cors = require("cors");
 const boxerRoutes = require("./routes/boxer.routes");
 const weatherRoutes = require("./routes/weather.routes");
 const requestLogger = require("./middlewares/requestLogger");
+const notFound = require("./middlewares/notFound");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -19,5 +21,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/boxers", boxerRoutes);
 app.use("/api/weather", weatherRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;

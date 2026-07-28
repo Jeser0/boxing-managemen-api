@@ -1,30 +1,6 @@
 const Boxer = require("../models/boxer.model");
 
-const formatValidationErrors = (error) =>
-  Object.values(error.errors).map((item) => item.message);
-
-const handleControllerError = (error, res) => {
-  if (error.name === "CastError") {
-    return res.status(400).json({
-      message: "El ID del boxeador no es válido",
-    });
-  }
-
-  if (error.name === "ValidationError") {
-    return res.status(400).json({
-      message: "Los datos enviados no son válidos",
-      errors: formatValidationErrors(error),
-    });
-  }
-
-  console.error(error);
-
-  return res.status(500).json({
-    message: "Ocurrió un error interno en el servidor",
-  });
-};
-
-const createBoxer = async (req, res) => {
+const createBoxer = async (req, res, next) => {
   try {
     const boxer = await Boxer.create(req.body);
 
@@ -33,11 +9,11 @@ const createBoxer = async (req, res) => {
       boxer,
     });
   } catch (error) {
-    return handleControllerError(error, res);
+    return next(error);
   }
 };
 
-const getBoxers = async (req, res) => {
+const getBoxers = async (req, res, next) => {
   try {
     const boxers = await Boxer.find().sort({ createdAt: -1 });
 
@@ -46,11 +22,11 @@ const getBoxers = async (req, res) => {
       boxers,
     });
   } catch (error) {
-    return handleControllerError(error, res);
+    return next(error);
   }
 };
 
-const getBoxerById = async (req, res) => {
+const getBoxerById = async (req, res, next) => {
   try {
     const boxer = await Boxer.findById(req.params.id);
 
@@ -64,11 +40,11 @@ const getBoxerById = async (req, res) => {
       boxer,
     });
   } catch (error) {
-    return handleControllerError(error, res);
+    return next(error);
   }
 };
 
-const updateBoxer = async (req, res) => {
+const updateBoxer = async (req, res, next) => {
   try {
     const boxer = await Boxer.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -86,11 +62,11 @@ const updateBoxer = async (req, res) => {
       boxer,
     });
   } catch (error) {
-    return handleControllerError(error, res);
+    return next(error);
   }
 };
 
-const deleteBoxer = async (req, res) => {
+const deleteBoxer = async (req, res, next) => {
   try {
     const boxer = await Boxer.findByIdAndDelete(req.params.id);
 
@@ -105,7 +81,7 @@ const deleteBoxer = async (req, res) => {
       boxer,
     });
   } catch (error) {
-    return handleControllerError(error, res);
+    return next(error);
   }
 };
 

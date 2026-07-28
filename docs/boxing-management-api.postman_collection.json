@@ -1,0 +1,261 @@
+{
+  "info": {
+    "_postman_id": "2ae86480-e8ec-4cec-9c04-40e3ef247381",
+    "name": "Boxing Management API",
+    "description": "Colección de pruebas para la API de gestión de boxeo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "boxerId",
+      "value": "REEMPLAZAR_CON_ID_REAL"
+    }
+  ],
+  "item": [
+    {
+      "name": "Estado de la API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      }
+    },
+    {
+      "name": "Boxeadores",
+      "item": [
+        {
+          "name": "Listar boxeadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear boxeador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"nickname\": \"El Trueno\",\n  \"birthDate\": \"1998-05-15\",\n  \"weight\": 91,\n  \"height\": 1.88,\n  \"category\": \"Peso pesado\",\n  \"wins\": 10,\n  \"losses\": 2,\n  \"draws\": 1,\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener boxeador por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers/{{boxerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers",
+                "{{boxerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar boxeador",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"El Campeón\",\n  \"wins\": 11\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers/{{boxerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers",
+                "{{boxerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar boxeador",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers/{{boxerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers",
+                "{{boxerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Probar validaciones",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"\",\n  \"lastName\": \"P\",\n  \"weight\": -10,\n  \"height\": 5,\n  \"category\": \"\",\n  \"wins\": -2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API externa",
+      "item": [
+        {
+          "name": "Consultar clima para entrenamiento",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/weather/training?latitude=-26.8083&longitude=-65.2176",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "weather",
+                "training"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-26.8083"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-65.2176"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Errores",
+      "item": [
+        {
+          "name": "Ruta inexistente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ruta-inexistente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ruta-inexistente"
+              ]
+            }
+          }
+        },
+        {
+          "name": "ID inválido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boxers/123",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boxers",
+                "123"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

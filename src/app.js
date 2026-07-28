@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 
 const boxerRoutes = require("./routes/boxer.routes");
+const requestLogger = require("./middlewares/requestLogger");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 app.get("/", (req, res) => {
   res.status(200).json({

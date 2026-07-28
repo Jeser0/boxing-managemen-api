@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 
+const boxerRoutes = require("./routes/boxer.routes");
+
 const app = express();
 
 app.use(cors());
@@ -11,5 +13,7 @@ app.get("/", (req, res) => {
     message: "API de gestión de boxeo funcionando correctamente",
   });
 });
+
+app.use("/api/boxers", boxerRoutes);
 
 module.exports = app;

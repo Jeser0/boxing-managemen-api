@@ -30,7 +30,7 @@ npm install
 
 ### 3. Variables de entorno
 
-Para esta entrega académica, el repositorio privado incluye un archivo `.env` con las variables necesarias para ejecutar el servidor y conectarse a MongoDB Atlas.
+Para esta entrega académica, el repositorio incluye un archivo `.env` con las variables necesarias para ejecutar el servidor y conectarse a MongoDB Atlas.
 
 Las variables utilizadas son:
 

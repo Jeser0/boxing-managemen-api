@@ -1,20 +1,8 @@
 # Boxing Management API
 
-API REST para gestionar boxeadores y consultar condiciones meteorológicas para entrenamientos.
+API REST desarrollada con Node.js, Express y MongoDB Atlas para gestionar boxeadores y consultar condiciones meteorológicas para entrenamientos.
 
-Proyecto final integrador de Backend desarrollado con Node.js, Express, MongoDB Atlas y Mongoose.
-
-## Funcionalidades
-
-- Crear, listar, consultar, actualizar y eliminar boxeadores.
-- Validar datos con `express-validator`.
-- Validar identificadores de MongoDB.
-- Registrar solicitudes HTTP mediante un middleware propio.
-- Manejar errores y rutas inexistentes.
-- Consultar una API externa de clima.
-- Generar recomendaciones básicas para entrenamientos al aire libre.
-
-## Tecnologías
+## Tecnologías utilizadas
 
 - Node.js
 - Express
@@ -24,55 +12,42 @@ Proyecto final integrador de Backend desarrollado con Node.js, Express, MongoDB 
 - Axios
 - CORS
 - dotenv
-- Nodemon
 
-## Requisitos
+## Cómo levantar el proyecto
 
-Antes de iniciar el proyecto se necesita:
-
-- Node.js instalado.
-- Una cuenta y un clúster en MongoDB Atlas.
-- Git instalado.
-- Postman opcionalmente, para probar las rutas HTTP.
-
-## Instalación
-
-1. Clonar el repositorio:
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Jeser0/boxing-managemen-api.git
-```
-
-2. Entrar en la carpeta:
-
-```bash
 cd boxing-managemen-api
 ```
 
-3. Instalar las dependencias:
+### 2. Instalar dependencias
 
 ```bash
 npm install
 ```
 
-4. Crear un archivo `.env` en la raíz del proyecto.
+### 3. Variables de entorno
 
-Ejemplo:
+Para esta entrega académica, el repositorio privado incluye un archivo `.env` con las variables necesarias para ejecutar el servidor y conectarse a MongoDB Atlas.
+
+Las variables utilizadas son:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb+srv://USUARIO:CONTRASEÑA@CLUSTER/NOMBRE_BASE_DE_DATOS
+MONGODB_URI=<cadena de conexión de MongoDB Atlas>
 ```
 
-No se debe publicar el archivo `.env` ni compartir las credenciales de MongoDB Atlas.
+También se incluye `.env.example` como referencia de la configuración.
 
-## Ejecución
+### 4. Base de datos
 
-Modo desarrollo:
+La base de datos utilizada es **MongoDB Atlas**, por lo tanto no es necesario iniciar una base de datos local ni ejecutar `mongod`.
 
-```bash
-npm run dev
-```
+Al iniciar el servidor, la aplicación lee `MONGODB_URI` desde `.env` y se conecta automáticamente a la base de datos remota.
+
+### 5. Iniciar el servidor
 
 Modo normal:
 
@@ -80,55 +55,49 @@ Modo normal:
 npm start
 ```
 
-El servidor se ejecuta por defecto en:
+Modo desarrollo:
+
+```bash
+npm run dev
+```
+
+Si la conexión es correcta, la terminal mostrará mensajes similares a:
+
+```text
+Conexión a MongoDB Atlas establecida correctamente
+Servidor ejecutándose en http://localhost:3000
+```
+
+La API estará disponible en:
 
 ```text
 http://localhost:3000
 ```
 
-## Respuesta inicial
+## Endpoints
 
-### GET `/`
+### Estado de la API
 
-Comprueba que la API está funcionando.
-
-Ejemplo:
-
-```json
-{
-  "message": "API de gestión de boxeo funcionando correctamente"
-}
+```http
+GET /
 ```
 
-## Endpoints de boxeadores
+### Boxeadores
 
-### GET `/api/boxers`
-
-Obtiene todos los boxeadores.
-
-Ejemplo de respuesta:
-
-```json
-{
-  "count": 1,
-  "boxers": []
-}
+```http
+GET    /api/boxers
+GET    /api/boxers/:id
+POST   /api/boxers
+PUT    /api/boxers/:id
+DELETE /api/boxers/:id
 ```
 
-### GET `/api/boxers/:id`
-
-Obtiene un boxeador por su identificador de MongoDB.
-
-### POST `/api/boxers`
-
-Crea un boxeador.
-
-Ejemplo de cuerpo JSON:
+Ejemplo para crear un boxeador:
 
 ```json
 {
   "firstName": "Juan",
-  "lastName": "Pérez",
+  "lastName": "Perez",
   "nickname": "El Trueno",
   "birthDate": "1998-05-15",
   "weight": 91,
@@ -141,148 +110,64 @@ Ejemplo de cuerpo JSON:
 }
 ```
 
-### PUT `/api/boxers/:id`
+### Clima para entrenamiento
 
-Actualiza uno o más campos de un boxeador.
-
-Ejemplo:
-
-```json
-{
-  "nickname": "El Campeón",
-  "wins": 11
-}
+```http
+GET /api/weather/training?latitude=-26.8083&longitude=-65.2176
 ```
 
-### DELETE `/api/boxers/:id`
+Esta ruta consume la API externa de Open-Meteo y devuelve las condiciones meteorológicas junto con una recomendación para entrenar al aire libre.
 
-Elimina un boxeador.
+## Funcionalidades implementadas
 
-## API externa de clima
+- CRUD completo de boxeadores.
+- Persistencia de datos en MongoDB Atlas.
+- Esquema propio con Mongoose.
+- Validaciones con `express-validator`.
+- Validación de identificadores de MongoDB.
+- Middleware personalizado para registrar solicitudes HTTP.
+- Manejo centralizado de errores.
+- Manejo de rutas inexistentes.
+- Consumo de una API externa.
+- Códigos HTTP adecuados para cada operación.
 
-### GET `/api/weather/training`
+## Pruebas
 
-Consulta las condiciones meteorológicas actuales mediante Open-Meteo y genera una recomendación para entrenar.
+Se puede probar la API desde Postman, Insomnia o cualquier cliente HTTP.
 
-Parámetros obligatorios:
-
-- `latitude`
-- `longitude`
-
-Ejemplo para San Miguel de Tucumán:
-
-```text
-http://localhost:3000/api/weather/training?latitude=-26.8083&longitude=-65.2176
-```
-
-Ejemplo de respuesta:
-
-```json
-{
-  "source": "Open-Meteo",
-  "requestedCoordinates": {
-    "latitude": -26.8083,
-    "longitude": -65.2176
-  },
-  "currentWeather": {
-    "temperature": {
-      "value": 25.5,
-      "unit": "°C"
-    }
-  },
-  "trainingRecommendation": "Las condiciones actuales son adecuadas para realizar un entrenamiento al aire libre."
-}
-```
-
-## Validaciones
-
-La API valida, entre otros datos:
-
-- Nombre y apellido obligatorios.
-- Longitud de textos.
-- Peso mayor que cero y no superior a 300 kg.
-- Altura expresada en metros.
-- Victorias, derrotas y empates iguales o mayores que cero.
-- Fecha con formato válido.
-- Identificadores válidos de MongoDB.
-
-Ejemplo de error:
-
-```json
-{
-  "message": "Los datos enviados no son válidos",
-  "errors": [
-    {
-      "field": "weight",
-      "message": "El peso debe ser mayor que 0 y no superar 300 kg"
-    }
-  ]
-}
-```
-
-## Códigos de respuesta principales
-
-| Código | Significado |
-|---|---|
-| `200` | Solicitud procesada correctamente |
-| `201` | Recurso creado correctamente |
-| `400` | Datos o identificador inválidos |
-| `404` | Recurso o ruta no encontrados |
-| `500` | Error interno del servidor |
-| `502` | Error al consultar la API externa |
-
-## Middleware propio
-
-El middleware `requestLogger` registra en la terminal:
-
-- Fecha y hora.
-- Método HTTP.
-- Ruta solicitada.
-- Código de estado.
-- Tiempo de respuesta.
-
-Ejemplo:
-
-```text
-[2026-07-28T20:00:00.000Z] GET /api/boxers - 200 - 64ms
-```
+En `docs/boxing-management-api.postman_collection.json` se incluye una colección de Postman con las solicitudes principales ya preparadas.
 
 ## Estructura principal
 
 ```text
-src/
-├── config/
-├── controllers/
-├── middlewares/
-├── models/
-├── routes/
-├── validators/
-├── app.js
+boxing-managemen-api/
+├── docs/
+├── src/
+│   ├── config/
+│   ├── controllers/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── validators/
+│   └── app.js
+├── .env
+├── .env.example
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── README.md
 └── server.js
 ```
 
-## Pruebas con Postman
-
-Dentro de `docs/` se incluye una colección de Postman con las solicitudes principales.
-
-Para importarla:
-
-1. Abrir Postman.
-2. Presionar `Import`.
-3. Elegir el archivo de la colección.
-4. Verificar que el servidor esté ejecutándose.
-5. Enviar las solicitudes.
-
-Para las rutas por ID, se debe reemplazar el valor de la variable `boxerId` con un identificador real devuelto al crear un boxeador.
-
 ## Requisitos del examen cubiertos
 
-- Base de datos propia en MongoDB Atlas.
+- MongoDB Atlas.
 - Servidor Node.js con rutas y métodos HTTP.
-- Esquema original de boxeadores.
+- Esquema propio.
 - Validaciones con `express-validator`.
 - Middleware propio.
-- Ruta conectada a una API externa.
+- Ruta que consume una API externa.
 
 ## Autor
 

@@ -39,7 +39,7 @@ PORT=3000
 MONGODB_URI=<cadena de conexión de MongoDB Atlas>
 ```
 
-También se incluye `.env.example` como referencia de la configuración.
+
 
 ### 4. Base de datos
 
